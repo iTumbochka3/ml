@@ -1,8 +1,8 @@
 <template>
     <div class="p-5">
-      <h1>Добавить маршрутный лист</h1>
+      <h1 class="h1-custom-header">Добавить маршрутный лист</h1>
 
-      <div class="main-block pt-2">
+      <div class="main-block pt-4">
         <div class="main-block__child">
           <label for="input-counterparty">Перевозчик</label>
           <v-select
@@ -68,7 +68,7 @@
 
       <hr class="custom-hr"/>
 
-      <div class="main-block pt-1">
+      <div class="main-block py-1">
         <div class="main-block__child">
           <label>Водитель</label>
           <b-form-select
@@ -103,21 +103,27 @@
 
       <hr class="custom-hr"/>
 
-      <div class="float-end">
-        <b-button
-            variant="outline-primary"
-            class="float-right"
-            @click="closeModal"
-        >
-          Отмена
-        </b-button>
-        <b-button
-            variant="primary"
-            class="float-right"
-            @click="saveData"
-        >
-          Добавить
-        </b-button>
+      <div v-if="resultText" class="error-div">
+        Ошибка: {{ resultText }}
+      </div>
+
+      <div class="button-div pt-4">
+        <div class="button-div__child">
+          <b-button
+              variant="outline-primary"
+              @click="closeModal"
+          >
+            Отмена
+          </b-button>
+        </div>
+        <div class="button-div__child">
+          <b-button
+              variant="primary"
+              @click="saveData"
+          >
+            Добавить
+          </b-button>
+        </div>
       </div>
     </div>
 </template>
@@ -136,6 +142,7 @@ export default {
       individual: '',
       truck: '',
       trailer: '',
+      resultText: '',
     }
   },
   computed: {
@@ -216,11 +223,21 @@ export default {
 
 <style lang="scss">
 
+.h1-custom-header {
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  color: #575757;
+  text-align: center;
+}
+
 .main-block {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   text-align: left;
+  font-size: 14px;
+  color: #828282;
 
   .main-block__child {
     flex: 1 1 350px;
@@ -246,6 +263,28 @@ export default {
   }
 }
 
+.error-div {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0px;
+  text-align: left;
+  color: #F2994A;
+}
+
+.button-div {
+  display: flex;
+  flex-direction: row;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+  justify-content: end;
+
+  .button-div__child {
+    margin-left: 1em;
+  }
+}
+
 .v-select {
   width: 100%;
 }
@@ -259,10 +298,12 @@ export default {
   width: 100%;
   height: 34px;
   border-radius: 5px;
+  font-size: 16px;
 }
 .custom-select-short {
   width: 100%;
   height: 34px;
   border-radius: 5px;
+  font-size: 16px;
 }
 </style>

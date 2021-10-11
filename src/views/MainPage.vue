@@ -6,12 +6,6 @@
     >
       Добавить МЛ
     </b-button>
-<!--    <b-button-->
-<!--        variant="primary"-->
-<!--        class="custom-button"-->
-<!--    >-->
-<!--      Закрыть-->
-<!--    </b-button>-->
     <modal
         name="table-modal"
         height="100%"
@@ -40,11 +34,50 @@ export default {
 </script>
 
 <style lang="scss">
-//.custom-button {
-//  top: 36px;
-//  left: 14%;
-//  display: block;
-//  position: absolute;
-//  border-radius: 20px 0 0 20px;
-//}
+.btn-primary {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  background-color: #25B1BA !important;
+  border-color: #25B1BA !important;
+}
+.btn-primary:hover {
+  color: #fff !important;
+  background-color: #13BFC0 !important;
+  border-color: #13BFC0 !important;
+}
+.btn-primary:focus {
+  box-shadow: unset !important;
+  color: #fff !important;
+  background-color: #02898A !important;
+  border-color: #02898A !important;
+}
+.btn-primary:active {
+  color: #fff  !important;
+  background-color: #25B1BA !important;
+  border-color: #25B1BA !important;
+}
+
+
+.btn-outline-primary {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: #25B1BA !important;
+  border-color: #25B1BA !important;
+}
+.btn-outline-primary:hover {
+  color: #fff !important;
+  background-color: #13BFC0 !important;
+  border-color: #13BFC0 !important;
+}
+.btn-outline-primary:focus {
+  box-shadow: unset !important;
+  color: #02898A !important;
+  background-color: #fff !important;
+  border-color: #02898A !important;
+}
+.btn-outline-primary:active {
+  color: #fff  !important;
+  background-color: #25B1BA !important;
+  border-color: #25B1BA !important;
+}
 </style>

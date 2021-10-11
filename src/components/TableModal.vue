@@ -1,8 +1,8 @@
 <template>
-  <div class="p-5">
-    <h2>Создание маршрутных листов</h2>
+  <div class="px-5 py-4">
+    <h2 class="h2-custom-header py-3">Создание маршрутных листов</h2>
     <hr/>
-    <div class="p-2">
+    <div class="py-3">
       <div class="d-flex flex-row justify-content-between pb-4">
         <b-button variant="outline-primary" @click="showModal">
           <b-icon icon="plus" aria-hidden="true"></b-icon>
@@ -13,17 +13,18 @@
           Создать маршрутные листы
         </b-button>
       </div>
-      <b-table
-          :striped="true"
-          :fields="column"
-          :items="sheets"
-          class="table"
-      >
-      </b-table>
+      <div class="py-3">
+        <b-table
+            :striped="true"
+            :fields="column"
+            :items="sheets"
+            class="table"
+        />
+      </div>
     </div>
     <modal
         name="ml-modal"
-        height="540px"
+        height="510px"
         width="850px"
     >
       <MLEditModal/>
@@ -109,6 +110,14 @@ export default {
 </script>
 
 <style lang="scss">
+
+.h2-custom-header {
+  text-align: left;
+  color: #575757;
+  font-weight: 600;
+  font-size: 24px;
+}
+
 .table {
   tr {
     vertical-align: middle;
