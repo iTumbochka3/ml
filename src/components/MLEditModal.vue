@@ -1,11 +1,9 @@
 <template>
-  <b-modal
-      id="ml-edit-modal"
-      title="Добавить маршрутный лист"
-      >
-    <b-container>
-      <b-row>
-        <b-col>
+    <div class="p-5">
+      <h1>Добавить маршрутный лист</h1>
+
+      <div class="main-block pt-2">
+        <div class="main-block__child">
           <label for="input-counterparty">Перевозчик</label>
           <v-select
               id="input-counterparty"
@@ -14,109 +12,114 @@
               :value="(counterParty) ? counterParty.name : ''"
               v-debounce="searchCounterparty"
               @input="setCounterParty"
-
           >
-            <span slot="no-options"></span>
+            <span slot="no-options">Ничего не найдено</span>
           </v-select>
-        </b-col>
-        <b-col>
+        </div>
+        <div class="main-block__child">
           <label>Договор</label>
           <b-form-select
               v-model="contract"
               :options="contractList"
               :disabled="!counterParty"
+              :required="true"
           />
-        </b-col>
-      </b-row>
+        </div>
+      </div>
 
-      <b-row class="pt-3">
-        <b-col>
+      <div class="main-block pt-4">
+        <div class="main-block__child">
           <label>Дата погрузки</label>
           <b-input-group class="mb-3">
             <b-form-input
+                id="example-input"
                 v-model="dateLoading"
                 type="text"
-            />
+                aria-invalid="false"
+            ></b-form-input>
             <b-input-group-append>
               <b-form-datepicker
-                  v-model="dateLoading"
+                  :value="dateLoading"
                   button-only
-                  right
-                  locale="ru-RU"
-              />
+                  :date-format-options="{ day: '2-digit', month: 'numeric', year: 'numeric' }"
+                  @context="onContextLoading"
+              ></b-form-datepicker>
             </b-input-group-append>
           </b-input-group>
-        </b-col>
-        <b-col>
+        </div>
+        <div class="main-block__child">
 <!--          <label>Дата выгрузки</label>-->
 <!--          <b-input-group class="mb-3">-->
 <!--            <b-form-input-->
 <!--                v-model="dateUnloading"-->
 <!--                type="text"-->
-<!--                placeholder="DD.MM.YYYY"-->
-<!--                autocomplete="off"-->
 <!--            />-->
 <!--            <b-input-group-append>-->
 <!--              <b-form-datepicker-->
 <!--                  v-model="dateUnloading"-->
 <!--                  button-only-->
 <!--                  right-->
-<!--                  locale="en-US"-->
-<!--                  aria-controls="example-input"-->
+<!--                  locale="ru-RU"-->
 <!--              />-->
 <!--            </b-input-group-append>-->
 <!--          </b-input-group>-->
-        </b-col>
-      </b-row>
+        </div>
+      </div>
 
-      <hr/>
+      <hr class="custom-hr"/>
 
-      <b-row>
-        <b-col>
+      <div class="main-block pt-1">
+        <div class="main-block__child">
           <label>Водитель</label>
           <b-form-select
               v-model="individual"
               :options="driverList"
               :disabled="!counterParty"
+              :required="true"
           />
-        </b-col>
-        <b-col>
-          <label>ТС</label>
-          <b-form-select
-              v-model="truck"
-              :options="vehicleList"
-              :disabled="!counterParty"
-          />
-        </b-col>
-        <b-col>
-          <label>Прицеп</label>
-          <b-form-select
-              v-model="trailer"
-              :options="trailerList"
-              :disabled="!counterParty"
-          />
-        </b-col>
-      </b-row>
-    </b-container>
+        </div>
+        <div class="main-block__child child-block">
+          <div class="child-block__subchild">
+            <label>ТС</label>
+            <b-form-select
+                v-model="truck"
+                :options="vehicleList"
+                :disabled="!counterParty"
+                :required="true"
+                class="custom-select-short"
+            />
+          </div>
+          <div class="child-block__subchild">
+            <label>Прицеп</label>
+            <b-form-select
+                v-model="trailer"
+                :options="trailerList"
+                :disabled="!counterParty"
+                class="custom-select-short"
+            />
+          </div>
+        </div>
+      </div>
 
-    <template #modal-footer>
-<!--      <p>Ошибка: У водителя отсутствует какой то там документ</p>-->
-<!--      <b-button-->
-<!--          variant="outline-primary"-->
-<!--          class="float-right"-->
-<!--          @click="console.log()"-->
-<!--      >-->
-<!--        Отмена-->
-<!--      </b-button>-->
-      <b-button
-          variant="primary"
-          class="float-right"
-          @click="saveData"
-      >
-        Добавить
-      </b-button>
-    </template>
-  </b-modal>
+      <hr class="custom-hr"/>
+
+      <div class="float-end">
+        <b-button
+            variant="outline-primary"
+            class="float-right"
+            @click="closeModal"
+        >
+          Отмена
+        </b-button>
+        <b-button
+            variant="primary"
+            class="float-right"
+            @click="saveData"
+        >
+          Добавить
+        </b-button>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -124,16 +127,12 @@ import moment from 'moment';
 
 export default {
   name: "MLEditModal",
-  mounted() {
-    this.dateLoading = moment().format("DD.MM.YYYY")
-    this.dateUnloading = moment().add(2, "days").format("DD.MM.YYYY");
-  },
   data() {
     return{
       counterParty: '',
       contract: '',
-      dateLoading: '',
-      dateUnloading: '',
+      dateLoading: moment().format("DD.MM.YYYY"),
+      dateUnloading: moment().add(2, "days").format("DD.MM.YYYY"),
       individual: '',
       truck: '',
       trailer: '',
@@ -177,6 +176,12 @@ export default {
     },
   },
   methods: {
+
+    onContextLoading(ctx) {
+      console.log(ctx.selectedFormatted)
+      // this.dateLoading = ctx.selectedFormatted
+    },
+
     async searchCounterparty(search) {
       await this.$store.dispatch('requestCounterPartyList', search)
     },
@@ -199,10 +204,65 @@ export default {
         truck: this.truck,
         trailer: this.trailer,
       });
+      this.closeModal();
     },
+
+    closeModal() {
+      this.$modal.hide('ml-modal');
+    }
   }
 }
 </script>
 
 <style lang="scss">
+
+.main-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: left;
+
+  .main-block__child {
+    flex: 1 1 350px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+  }
+
+  .child-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+
+    .child-block__subchild {
+      flex: 1 1 150px;
+      display: flex;
+      flex-direction: column;
+      margin-left: 0.5em;
+      margin-right: 0.5em;
+    }
+  }
+}
+
+.v-select {
+  width: 100%;
+}
+
+.custom-hr {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.custom-select {
+  width: 100%;
+  height: 34px;
+  border-radius: 5px;
+}
+.custom-select-short {
+  width: 100%;
+  height: 34px;
+  border-radius: 5px;
+}
 </style>

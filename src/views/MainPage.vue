@@ -6,7 +6,18 @@
     >
       Добавить МЛ
     </b-button>
-    <modal name="table-modal">
+<!--    <b-button-->
+<!--        variant="primary"-->
+<!--        class="custom-button"-->
+<!--    >-->
+<!--      Закрыть-->
+<!--    </b-button>-->
+    <modal
+        name="table-modal"
+        height="100%"
+        width="80%"
+        :shiftX="1"
+    >
       <TableModal/>
     </modal>
   </div>
@@ -29,4 +40,11 @@ export default {
 </script>
 
 <style lang="scss">
+//.custom-button {
+//  top: 36px;
+//  left: 14%;
+//  display: block;
+//  position: absolute;
+//  border-radius: 20px 0 0 20px;
+//}
 </style>

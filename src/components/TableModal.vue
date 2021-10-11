@@ -1,29 +1,38 @@
 <template>
-  <div>
-<!--    <template #modal-header>-->
-      <h2>Создание маршрутных листов</h2>
-<!--    </template>-->
-
-      <div class="p-2">
-        <div class="d-flex flex-row justify-content-between pb-4">
-          <b-button v-b-modal="'ml-edit-modal'" variant="outline-primary">Добавить поле</b-button>
-          <b-button variant="primary" @click="sendSheets">Создать маршрутные листы</b-button>
-        </div>
-        <b-table
-            :striped="true"
-            :fields="column"
-            :items="sheets"
-            head-variant="light"
-        >
-        </b-table>
+  <div class="p-5">
+    <h2>Создание маршрутных листов</h2>
+    <hr/>
+    <div class="p-2">
+      <div class="d-flex flex-row justify-content-between pb-4">
+        <b-button variant="outline-primary" @click="showModal">
+          <b-icon icon="plus" aria-hidden="true"></b-icon>
+          Добавить поле
+        </b-button>
+        <b-button variant="primary" @click="sendSheets">
+          <b-icon icon="check" aria-hidden="true"></b-icon>
+          Создать маршрутные листы
+        </b-button>
       </div>
-    <MLEditModal/>
+      <b-table
+          :striped="true"
+          :fields="column"
+          :items="sheets"
+          class="table"
+      >
+      </b-table>
+    </div>
+    <modal
+        name="ml-modal"
+        height="540px"
+        width="850px"
+    >
+      <MLEditModal/>
+    </modal>
   </div>
 </template>
 
 <script>
 import MLEditModal from "@/components/MLEditModal";
-// import axios from "axios";
 
 export default {
   name: "TableModal",
@@ -62,7 +71,7 @@ export default {
           label: "ТС/прицеп"
         },
         {
-          key: "result",
+          key: "result_text",
           label: "Описание ошибки"
         },
       ],
@@ -74,11 +83,14 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      this.$modal.show('ml-modal');
+    },
     sendSheets() {
       let result = [];
-      for(let i=0; i<this.sheets.length; i++) {
+      for (let i = 0; i < this.sheets.length; i++) {
         const sheet = {
-          line_uuid: (i+1).toString(),
+          line_uuid: (i + 1).toString(),
           need_uuid: '75f6c17d-d4e3-11eb-80d9-00155d3b3502',
           counterparty_uuid: this.sheets[i].counterparty.uuid,
           contract_uuid: this.sheets[i].contract.uuid,
@@ -97,4 +109,24 @@ export default {
 </script>
 
 <style lang="scss">
+.table {
+  tr {
+    vertical-align: middle;
+  }
+  th {
+    background-color: #25B1BA !important;
+    color: white;
+    border: 1px solid white;
+    font-weight: 600;
+  }
+  th:first-child {
+    border-top-left-radius: 5px;
+  }
+  th:last-child {
+    border-top-right-radius: 5px;
+  }
+  td {
+    border: 1px solid white;
+  }
+}
 </style>
