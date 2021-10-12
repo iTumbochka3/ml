@@ -322,8 +322,12 @@ export default {
       flex: 1 1 150px;
       display: flex;
       flex-direction: column;
-      margin-left: 0.5em;
+    }
+    .child-block__subchild:first-child {
       margin-right: 0.5em;
+    }
+    .child-block__subchild:last-child {
+      margin-left: 0.5em;
     }
   }
 }

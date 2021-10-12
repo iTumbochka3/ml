@@ -30,7 +30,7 @@
             <b-icon
                 icon="x"
                 aria-hidden="true"
-                style="width: 22px; height: 22px"
+                style="width: 22px; height: 22px; float: right"
                 @click="removeSheet(data.index)"
             />
           </template>
