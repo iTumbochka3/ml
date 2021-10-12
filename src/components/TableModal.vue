@@ -19,7 +19,17 @@
             :fields="column"
             :items="sheets"
             class="table"
-        />
+            @row-clicked="editSheet"
+        >
+          <template #cell(result_text)="data">
+            <b-icon
+                icon="x"
+                aria-hidden="true"
+                style="width: 22px; height: 22px"
+                @click="removeSheet(data.index)"
+            />
+          </template>
+        </b-table>
       </div>
     </div>
     <modal
@@ -27,7 +37,11 @@
         height="510px"
         width="850px"
     >
-      <MLEditModal/>
+      <MLEditModal
+          :current-sheet-index="currentSheetIndex"
+          :current-sheet="currentSheet"
+          @closeModal="closeModal"
+      />
     </modal>
   </div>
 </template>
@@ -68,7 +82,7 @@ export default {
           label: "Водитель"
         },
         {
-          key: "trailer.number",
+          key: "truck.number",
           label: "ТС/прицеп"
         },
         {
@@ -76,6 +90,8 @@ export default {
           label: "Описание ошибки"
         },
       ],
+      currentSheetIndex: '',
+      currentSheet: '',
     }
   },
   computed: {
@@ -86,6 +102,19 @@ export default {
   methods: {
     showModal() {
       this.$modal.show('ml-modal');
+    },
+    closeModal() {
+      this.currentSheetIndex = '';
+      this.currentSheet = ''
+      this.$modal.hide('ml-modal');
+    },
+    editSheet(item, index) {
+      this.currentSheet = item;
+      this.currentSheetIndex = index;
+      this.showModal();
+    },
+    removeSheet(index) {
+      this.$store.dispatch('deleteSheet', index);
     },
     sendSheets() {
       let result = [];
@@ -119,6 +148,8 @@ export default {
 }
 
 .table {
+  color: white !important;
+
   tr {
     vertical-align: middle;
   }
@@ -136,6 +167,9 @@ export default {
   }
   td {
     border: 1px solid white;
+    font-weight: 400;
+    font-size: 14px;
+    color: #575757 !important;
   }
 }
 </style>

@@ -13,15 +13,19 @@ import 'vue-select/dist/vue-select.css';
 
 import VModal from 'vue-js-modal'
 
+import DatePicker from "vue2-datepicker";
+import 'vue2-datepicker/index.css';
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(PortalVue)
 Vue.use(Vuex)
 Vue.use(vueDebounce, {
-  defaultTime: '500ms'
+  defaultTime: '400ms'
 })
 Vue.use(VModal)
+Vue.use(DatePicker)
 
 Vue.component('v-select', vSelect)
 

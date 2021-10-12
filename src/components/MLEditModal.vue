@@ -30,39 +30,21 @@
       <div class="main-block pt-4">
         <div class="main-block__child">
           <label>Дата погрузки</label>
-          <b-input-group class="mb-3">
-            <b-form-input
-                id="example-input"
-                v-model="dateLoading"
-                type="text"
-                aria-invalid="false"
-            ></b-form-input>
-            <b-input-group-append>
-              <b-form-datepicker
-                  :value="dateLoading"
-                  button-only
-                  :date-format-options="{ day: '2-digit', month: 'numeric', year: 'numeric' }"
-                  @context="onContextLoading"
-              ></b-form-datepicker>
-            </b-input-group-append>
-          </b-input-group>
+          <date-picker
+              class="custom-datepicker"
+              v-model="dateLoading"
+              format="DD.MM.YYYY"
+              value-type="format"
+          />
         </div>
         <div class="main-block__child">
-<!--          <label>Дата выгрузки</label>-->
-<!--          <b-input-group class="mb-3">-->
-<!--            <b-form-input-->
-<!--                v-model="dateUnloading"-->
-<!--                type="text"-->
-<!--            />-->
-<!--            <b-input-group-append>-->
-<!--              <b-form-datepicker-->
-<!--                  v-model="dateUnloading"-->
-<!--                  button-only-->
-<!--                  right-->
-<!--                  locale="ru-RU"-->
-<!--              />-->
-<!--            </b-input-group-append>-->
-<!--          </b-input-group>-->
+          <label>Дата выгрузки</label>
+          <date-picker
+              class="custom-datepicker"
+              v-model="dateUnloading"
+              format="DD.MM.YYYY"
+              value-type="format"
+          />
         </div>
       </div>
 
@@ -118,6 +100,14 @@
         </div>
         <div class="button-div__child">
           <b-button
+              v-if="currentSheet"
+              variant="primary"
+              @click=" editData"
+          >
+            Редактировать
+          </b-button>
+          <b-button
+              v-else
               variant="primary"
               @click="saveData"
           >
@@ -133,6 +123,25 @@ import moment from 'moment';
 
 export default {
   name: "MLEditModal",
+  props: {
+    'currentSheetIndex': {
+      required: false,
+      default() {
+        return '';
+      }
+    },
+    'currentSheet': {
+      required: false,
+      default() {
+        return '';
+      }
+    },
+  },
+  mounted() {
+    if (this.currentSheet) {
+      this.initData();
+    }
+  },
   data() {
     return{
       counterParty: '',
@@ -184,9 +193,15 @@ export default {
   },
   methods: {
 
-    onContextLoading(ctx) {
-      console.log(ctx.selectedFormatted)
-      // this.dateLoading = ctx.selectedFormatted
+    initData() {
+      this.counterParty = this.currentSheet.counterparty;
+      this.contract = this.currentSheet.contract;
+      this.dateLoading = this.currentSheet.date_loading;
+      this.dateUnloading = this.currentSheet.date_unloading;
+      this.individual = this.currentSheet.individual;
+      this.truck = this.currentSheet.truck;
+      this.trailer = this.currentSheet.trailer;
+      this.resultText = this.currentSheet.result_text ? this.currentSheet.result_text : '';
     },
 
     async searchCounterparty(search) {
@@ -195,6 +210,10 @@ export default {
 
     setCounterParty(value) {
       this.counterParty = value;
+      this.contract = '';
+      this.individual = '';
+      this.truck = '';
+      this.trailer = '';
       this.$store.dispatch('requestContracts', value.uuid);
       this.$store.dispatch('requestDrivers', value.uuid);
       this.$store.dispatch('requestVehicles', value.uuid);
@@ -202,7 +221,21 @@ export default {
     },
 
     saveData() {
-      this.$store.dispatch('createNewSheet', {
+      this.$store.dispatch('createSheet', {
+        counterParty: this.counterParty,
+        contract: this.contract,
+        dateLoading: this.dateLoading,
+        dateUnloading: this.dateUnloading,
+        individual: this.individual,
+        truck: this.truck,
+        trailer: this.trailer,
+      });
+      this.closeModal();
+    },
+
+    editData() {
+      this.$store.dispatch('editSheet', {
+        editIndex: this.currentSheetIndex,
         counterParty: this.counterParty,
         contract: this.contract,
         dateLoading: this.dateLoading,
@@ -215,7 +248,8 @@ export default {
     },
 
     closeModal() {
-      this.$modal.hide('ml-modal');
+      this.$store.dispatch('clearCounterPartyList');
+      this.$emit('closeModal');
     }
   }
 }
@@ -287,6 +321,26 @@ export default {
 
 .v-select {
   width: 100%;
+  height: 39px !important;
+  font-size: 16px;
+  color: #575757;
+   //31px
+  .vs__dropdown-toggle {
+    height: 39px !important;
+    //31px
+    .vs__selected-options {
+      height: 33px !important;
+      //25px
+      .vs__search {
+        height: 32px !important;
+        //21px
+      }
+      .vs__selected {
+        margin: 0 2px 0;
+        height: 36px !important;
+      }
+    }
+  }
 }
 
 .custom-hr {
@@ -296,14 +350,26 @@ export default {
 
 .custom-select {
   width: 100%;
-  height: 34px;
+  height: 39px;
   border-radius: 5px;
   font-size: 16px;
+  color: #575757;
 }
 .custom-select-short {
   width: 100%;
-  height: 34px;
+  height: 39px;
   border-radius: 5px;
   font-size: 16px;
+  color: #575757;
+}
+
+.custom-datepicker {
+  width: 100% !important;
+  height: 39px !important;
+  .mx-input-wrapper {
+    .mx-input {
+      height: 39px !important;
+    }
+  }
 }
 </style>

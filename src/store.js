@@ -7,26 +7,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         sheets: [
-            // {
-            //     counterparty_uuid: 'Либрасофт ООО (Тестирование)',
-            //     contract_uuid: 'Нет',
-            //     phone_number: '+7(918)385-71-44',
-            //     date_loading: '18.06.2021',
-            //     date_unloading: '18.06.2021',
-            //     individual_uuid: 'Дмитриева Константин Олегович',
-            //     trailer_uuid: 'А 543 КХ 123',
-            //     result: 'Описание ошибки'
-            // },
-            // {
-            //     counterparty_uuid: 'Либрасофт ООО (Тестирование)',
-            //     contract_uuid: 'Нет',
-            //     phone_number: '+7(918)385-71-44',
-            //     date_loading: '18.06.2021',
-            //     date_unloading: '18.06.2021',
-            //     individual_uuid: 'Дмитриева Константин Олегович',
-            //     trailer_uuid: 'А 543 КХ 123',
-            //     result: 'Описание ошибки'
-            // },
         ],
         counterPartyList: [],
         contracts: [],
@@ -34,8 +14,13 @@ export default new Vuex.Store({
         vehicles: [],
         trailers: [],
     },
+    getters: {
+        getSheets(state) {
+            return state.sheets;
+        }
+    },
     actions: {
-        createNewSheet({commit}, {
+        createSheet({commit}, {
             counterParty,
             contract,
             dateLoading,
@@ -56,7 +41,44 @@ export default new Vuex.Store({
             commit('ADD_SHEET', sheet)
         },
 
-        sendSheets({commit}, result) {
+        editSheet({commit, getters}, {
+            editIndex,
+            counterParty,
+            contract,
+            dateLoading,
+            dateUnloading,
+            individual,
+            truck,
+            trailer,
+        }) {
+            const newSheet = {
+                counterparty: counterParty,
+                contract: contract,
+                individual: individual,
+                truck: truck,
+                trailer: trailer,
+                date_loading: dateLoading,
+                date_unloading: dateUnloading
+            }
+
+            let result = getters.getSheets.map((item, index) => {
+                if (index === editIndex) {
+                    return newSheet;
+                } else {
+                    return item;
+                }
+            });
+
+            commit('SET_SHEETS', result);
+        },
+
+        deleteSheet({commit, getters}, deleteIndex) {
+            let sheets = getters.getSheets.filter((item, index) => deleteIndex !== index);
+            commit('SET_SHEETS', sheets);
+        },
+
+        // 404 !!!!
+        sendSheets({commit,getters}, result) {
             axios.request({
               url: '/api/test/v1/tek/need-route-sheet-add',
               method: 'POST',
@@ -68,17 +90,21 @@ export default new Vuex.Store({
                 'sheets': result,
               }
             }).then(response => {
-              console.log(response);
-              //фильтрация sheets по успешным
+              console.log('response', response);
                 let errors = response.data.map(item => {
                     if(item.result_ok === false) {
                         return item.line_uuid
                     }
                 })
-                console.log('errors', errors);
-                const filtered = result;
-                commit('SET_SHEETS', filtered)
+                console.log('errors map', errors);
+
+                let filtered = getters.getSheets.filter((item, index) => errors.indexOf(index) !== -1);
+                commit('SET_SHEETS', filtered);
             })
+        },
+
+        clearCounterPartyList({commit}) {
+            commit('SET_COUNTER_PARTY_LIST', []);
         },
 
         requestCounterPartyList({commit}, name) {
@@ -94,7 +120,7 @@ export default new Vuex.Store({
                         'name': name,
                     }
                 }).then(response => {
-                    commit('SET_COUNTER_PARTY_LIST', response.data.data)
+                    commit('SET_COUNTER_PARTY_LIST', response.data.data);
                 })
             }
         },
