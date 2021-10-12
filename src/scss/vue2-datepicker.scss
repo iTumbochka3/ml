@@ -1,9 +1,20 @@
+$namespace: 'xmx';
+
 .custom-datepicker {
   width: 100% !important;
   height: 39px !important;
-  .mx-input-wrapper {
-    .mx-input {
+  .xmx-input-wrapper {
+    .xmx-input {
       height: 39px !important;
+    }
+    .xmx-icon-calendar {
+      color: #25B1BA;
     }
   }
 }
+
+$default-color: #555;
+$primary-color: #25B1BA;
+$input-hover-border-color: #25B1BA;
+
+@import "~vue2-datepicker/scss/index.scss";

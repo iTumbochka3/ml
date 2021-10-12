@@ -43,6 +43,7 @@
               v-model="dateLoading"
               format="DD.MM.YYYY"
               value-type="format"
+              prefix-class="xmx"
           />
         </div>
         <div class="main-block__child">
@@ -52,6 +53,7 @@
               v-model="dateUnloading"
               format="DD.MM.YYYY"
               value-type="format"
+              prefix-class="xmx"
           />
         </div>
       </div>
