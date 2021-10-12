@@ -21,7 +21,12 @@
             class="table"
             @row-clicked="editSheet"
         >
+          <template #cell(truck.number)="data">
+            <div>{{ data.item.truck.number }}</div>
+            <div>{{ data.item.trailer.number }}</div>
+          </template>
           <template #cell(result_text)="data">
+            {{ data.item.result_text }}
             <b-icon
                 icon="x"
                 aria-hidden="true"
@@ -36,6 +41,7 @@
         name="ml-modal"
         height="510px"
         width="850px"
+        :clickToClose="false"
     >
       <MLEditModal
           :current-sheet-index="currentSheetIndex"

@@ -1,5 +1,13 @@
 <template>
     <div class="p-5">
+
+      <b-icon
+          icon="x"
+          aria-hidden="true"
+          class="custom-close-icon"
+          @click="closeModal()"
+      />
+
       <h1 class="h1-custom-header">Добавить маршрутный лист</h1>
 
       <div class="main-block pt-4">
@@ -77,6 +85,7 @@
                 v-model="trailer"
                 :options="trailerList"
                 :disabled="!counterParty"
+                :required="false"
                 class="custom-select-short"
             />
           </div>
@@ -87,6 +96,9 @@
 
       <div v-if="resultText" class="error-div">
         Ошибка: {{ resultText }}
+      </div>
+      <div v-if="errorText" class="error-div">
+        Ошибка: {{ errorText }}
       </div>
 
       <div class="button-div pt-4">
@@ -152,6 +164,7 @@ export default {
       truck: '',
       trailer: '',
       resultText: '',
+      errorText: '',
     }
   },
   computed: {
@@ -220,31 +233,52 @@ export default {
       this.$store.dispatch('requestTrailers', value.uuid);
     },
 
+    customValidate() {
+      this.errorText = ''
+      if(!this.counterParty) {
+        this.errorText+="не заполнено поле \"Перевозчик\"; "
+      }
+      if(!this.contract) {
+        this.errorText+="не заполнено поле \"Договор\"; "
+      }
+      if(!this.individual) {
+        this.errorText+="не заполнено поле \"Водитель\"; "
+      }
+      if(!this.truck) {
+        this.errorText+="не заполнено поле \"ТС\"; "
+      }
+      return this.errorText;
+    },
+
     saveData() {
-      this.$store.dispatch('createSheet', {
-        counterParty: this.counterParty,
-        contract: this.contract,
-        dateLoading: this.dateLoading,
-        dateUnloading: this.dateUnloading,
-        individual: this.individual,
-        truck: this.truck,
-        trailer: this.trailer,
-      });
-      this.closeModal();
+      if(!this.customValidate()) {
+        this.$store.dispatch('createSheet', {
+          counterParty: this.counterParty,
+          contract: this.contract,
+          dateLoading: this.dateLoading,
+          dateUnloading: this.dateUnloading,
+          individual: this.individual,
+          truck: this.truck,
+          trailer: this.trailer,
+        });
+        this.closeModal();
+      }
     },
 
     editData() {
-      this.$store.dispatch('editSheet', {
-        editIndex: this.currentSheetIndex,
-        counterParty: this.counterParty,
-        contract: this.contract,
-        dateLoading: this.dateLoading,
-        dateUnloading: this.dateUnloading,
-        individual: this.individual,
-        truck: this.truck,
-        trailer: this.trailer,
-      });
-      this.closeModal();
+      if(!this.customValidate()) {
+        this.$store.dispatch('editSheet', {
+          editIndex: this.currentSheetIndex,
+          counterParty: this.counterParty,
+          contract: this.contract,
+          dateLoading: this.dateLoading,
+          dateUnloading: this.dateUnloading,
+          individual: this.individual,
+          truck: this.truck,
+          trailer: this.trailer,
+        });
+        this.closeModal();
+      }
     },
 
     closeModal() {
@@ -256,6 +290,17 @@ export default {
 </script>
 
 <style lang="scss">
+
+.custom-close-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 30px;
+  margin-right: 30px;
+  width: 26px;
+  height: 26px;
+  color: #B9B9C3;
+}
 
 .h1-custom-header {
   font-size: 28px;
