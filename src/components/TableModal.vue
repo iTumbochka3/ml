@@ -145,6 +145,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "src/scss/table";
 
 .h2-custom-header {
   text-align: left;
@@ -153,29 +154,4 @@ export default {
   font-size: 24px;
 }
 
-.table {
-  color: white !important;
-
-  tr {
-    vertical-align: middle;
-  }
-  th {
-    background-color: #25B1BA !important;
-    color: white;
-    border: 1px solid white;
-    font-weight: 600;
-  }
-  th:first-child {
-    border-top-left-radius: 5px;
-  }
-  th:last-child {
-    border-top-right-radius: 5px;
-  }
-  td {
-    border: 1px solid white;
-    font-weight: 400;
-    font-size: 14px;
-    color: #575757 !important;
-  }
-}
 </style>

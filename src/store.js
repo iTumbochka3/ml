@@ -90,13 +90,11 @@ export default new Vuex.Store({
                 'sheets': result,
               }
             }).then(response => {
-              console.log('response', response);
                 let errors = response.data.map(item => {
                     if(item.result_ok === false) {
                         return item.line_uuid
                     }
                 })
-                console.log('errors map', errors);
 
                 let filtered = getters.getSheets.filter((item, index) => errors.indexOf(index) !== -1);
                 commit('SET_SHEETS', filtered);

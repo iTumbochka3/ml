@@ -290,6 +290,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "src/scss/vue-select";
+@import "src/scss/vue2-datepicker";
 
 .custom-close-icon {
   position: absolute;
@@ -364,60 +366,8 @@ export default {
   }
 }
 
-.v-select {
-  width: 100%;
-  height: 39px !important;
-   //31px
-  .vs__dropdown-toggle {
-    height: 39px !important;
-    //31px
-    .vs__selected-options {
-      height: 33px !important;
-      //25px
-      .vs__search {
-        height: 32px !important;
-        //21px
-      }
-      .vs__selected {
-        font-size: 16px;
-        color: #575757;
-        margin: 0 2px 0;
-        height: 36px !important;
-      }
-    }
-  }
-}
-
 .custom-hr {
   margin-left: 0.5em;
   margin-right: 0.5em;
-}
-
-.custom-select {
-  width: 100%;
-  height: 39px;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #575757;
-  .icon {
-    color: red !important;
-  }
-}
-.custom-select-short {
-  width: 100%;
-  height: 39px;
-  border-radius: 5px;
-  font-size: 16px;
-  color: #575757;
-}
-
-.custom-datepicker {
-  width: 100% !important;
-  height: 39px !important;
-  .mx-input-wrapper {
-    .mx-input {
-      height: 39px !important;
-    }
-  }
 }
 </style>
