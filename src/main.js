@@ -16,6 +16,8 @@ import VModal from 'vue-js-modal'
 import DatePicker from "vue2-datepicker";
 import 'vue2-datepicker/index.css';
 
+import './index.scss';
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)

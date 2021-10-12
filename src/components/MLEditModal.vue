@@ -367,8 +367,6 @@ export default {
 .v-select {
   width: 100%;
   height: 39px !important;
-  font-size: 16px;
-  color: #575757;
    //31px
   .vs__dropdown-toggle {
     height: 39px !important;
@@ -381,6 +379,8 @@ export default {
         //21px
       }
       .vs__selected {
+        font-size: 16px;
+        color: #575757;
         margin: 0 2px 0;
         height: 36px !important;
       }
@@ -399,6 +399,9 @@ export default {
   border-radius: 5px;
   font-size: 16px;
   color: #575757;
+  .icon {
+    color: red !important;
+  }
 }
 .custom-select-short {
   width: 100%;
