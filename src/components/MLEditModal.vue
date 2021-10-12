@@ -25,12 +25,13 @@
           </v-select>
         </div>
         <div class="main-block__child">
-          <label>Договор</label>
-          <b-form-select
-              v-model="contract"
+          <label for="input-contract">Договор</label>
+          <v-select
+              id="input-contract"
+              label="name"
               :options="contractList"
+              v-model="contract"
               :disabled="!counterParty"
-              :required="true"
           />
         </div>
       </div>
@@ -62,33 +63,34 @@
 
       <div class="main-block py-1">
         <div class="main-block__child">
-          <label>Водитель</label>
-          <b-form-select
-              v-model="individual"
+          <label for="input-individual">Водитель</label>
+          <v-select
+              id="input-individual"
+              label="name"
               :options="driverList"
+              v-model="individual"
               :disabled="!counterParty"
-              :required="true"
           />
         </div>
         <div class="main-block__child child-block">
           <div class="child-block__subchild">
-            <label>ТС</label>
-            <b-form-select
-                v-model="truck"
+            <label for="input-truck">ТС</label>
+            <v-select
+                id="input-truck"
+                label="number"
                 :options="vehicleList"
+                v-model="truck"
                 :disabled="!counterParty"
-                :required="true"
-                class="custom-select-short"
             />
           </div>
           <div class="child-block__subchild">
-            <label>Прицеп</label>
-            <b-form-select
-                v-model="trailer"
+            <label for="input-trailer">Прицеп</label>
+            <v-select
+                id="input-trailer"
+                label="number"
                 :options="trailerList"
+                v-model="trailer"
                 :disabled="!counterParty"
-                :required="false"
-                class="custom-select-short"
             />
           </div>
         </div>
@@ -174,36 +176,16 @@ export default {
       return this.$store.state.counterPartyList;
     },
     contractList() {
-      return this.$store.state.contracts.map(item => {
-        return {
-          text: item.name,
-          value: item
-        }
-      });
+      return this.$store.state.contracts;
     },
     driverList() {
-      return this.$store.state.drivers.map(item => {
-        return {
-          text: item.name,
-          value: item
-        }
-      });
+      return this.$store.state.drivers;
     },
     vehicleList() {
-      return this.$store.state.vehicles.map(item => {
-        return {
-          text: item.number,
-          value: item
-        }
-      });
+      return this.$store.state.vehicles;
     },
     trailerList() {
-      return this.$store.state.trailers.map(item => {
-        return {
-          text: item.number,
-          value: item
-        }
-      });
+      return this.$store.state.trailers;
     },
   },
   methods: {

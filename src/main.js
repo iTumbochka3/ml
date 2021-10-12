@@ -30,6 +30,14 @@ Vue.use(VModal)
 Vue.use(DatePicker)
 
 Vue.component('v-select', vSelect)
+vSelect.props.components.default = () => ({
+  Deselect: {
+    render: createElement => createElement('b-icon', {props: { icon: 'x' }}),
+  },
+  OpenIndicator: {
+    render: createElement => createElement('b-icon', {props: { icon: 'chevron-down' }}),
+  },
+});
 
 new Vue({
   render: h => h(App),
