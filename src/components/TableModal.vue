@@ -23,16 +23,20 @@
         >
           <template #cell(truck.number)="data">
             <div>{{ data.item.truck.number }}</div>
-            <div>{{ data.item.trailer.number }}</div>
+            <div v-if="data.item.trailer">{{ data.item.trailer.number }}</div>
           </template>
           <template #cell(result_text)="data">
-            {{ data.item.result_text }}
-            <b-icon
-                icon="x"
-                aria-hidden="true"
-                style="width: 22px; height: 22px; float: right"
-                @click="removeSheet(data.index)"
-            />
+            <div class="d-flex flex-row justify-content-end align-items-center">
+              <div>{{ data.item.result_text }}</div>
+              <div>
+                <b-icon
+                    icon="x"
+                    aria-hidden="true"
+                    style="width: 22px; height: 22px; float: right"
+                    @click="removeSheet(data.index)"
+                />
+              </div>
+            </div>
           </template>
         </b-table>
       </div>
@@ -131,8 +135,8 @@ export default {
           counterparty_uuid: this.sheets[i].counterparty.uuid,
           contract_uuid: this.sheets[i].contract.uuid,
           individual_uuid: this.sheets[i].individual.uuid,
-          truck_uuid: this.sheets[i].truck ? this.sheets[i].truck.number : '',
-          trailer_uuid: this.sheets[i].trailer ? this.sheets[i].trailer.number : '',
+          truck_uuid: this.sheets[i].truck ? this.sheets[i].truck.uuid : '',
+          trailer_uuid: this.sheets[i].trailer ? this.sheets[i].trailer.uuid : '',
           date_loading: this.sheets[i].date_loading,
           date_unloading: this.sheets[i].date_unloading
         }

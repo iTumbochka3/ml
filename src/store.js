@@ -77,10 +77,9 @@ export default new Vuex.Store({
             commit('SET_SHEETS', sheets);
         },
 
-        // 404 !!!!
         sendSheets({commit,getters}, result) {
             axios.request({
-              url: '/api/test/v1/tek/need-route-sheet-add',
+              url: '/api/test/v1/need-route-sheet-add',
               method: 'POST',
               baseURL: 'https://testapi2.sanador.ru',
               headers: {
@@ -90,13 +89,35 @@ export default new Vuex.Store({
                 'sheets': result,
               }
             }).then(response => {
-                let errors = response.data.map(item => {
-                    if(item.result_ok === false) {
-                        return item.line_uuid
+                let errorItems = [];
+                if (response.data.data) {
+                    errorItems = response.data.data.map(item => {
+                        if (item.result_ok === false) {
+                            return {
+                                uuid: item.line_uuid,
+                                text: item.result_text
+                            }
+                        }
+                    })
+                }
+
+                let filtered = []
+                getters.getSheets.forEach((item, index) => {
+                    if (errorItems.map(item => item.uuid).indexOf((index+1).toString()) > -1) {
+                        filtered.push(
+                            {
+                                counterparty: item.counterparty,
+                                contract: item.contract,
+                                individual: item.individual,
+                                truck: item.truck ? item.truck : '',
+                                trailer: item.trailer ? item.trailer : '',
+                                date_loading: item.date_loading,
+                                date_unloading: item.date_unloading,
+                                result_text: errorItems.find(item => item.uuid-1 === index).text
+                            }
+                        )
                     }
                 })
-
-                let filtered = getters.getSheets.filter((item, index) => errors.indexOf(index) !== -1);
                 commit('SET_SHEETS', filtered);
             })
         },
